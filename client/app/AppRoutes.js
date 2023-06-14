@@ -2,7 +2,10 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 import AuthForm from '../features/auth/AuthForm';
+import CartPage from '../features/cart/CartPage';
 import Home from '../features/home/Home';
+import ProductDetailsPage from '../features/products/ProductDetailsPage';
+import ProductsPage from '../features/products/ProductsPage';
 import { me } from './store';
 
 /**
@@ -23,6 +26,9 @@ const AppRoutes = () => {
         <Routes>
           <Route path="/*" element={<Home />} />
           <Route to="/home" element={<Home />} />
+          <Route path='/products' element={<ProductsPage />} />
+          <Route path='/products/:id' element={<ProductDetailsPage />} />
+          <Route path='/cart' element={<CartPage />} />
         </Routes>
       ) : (
         <Routes>
