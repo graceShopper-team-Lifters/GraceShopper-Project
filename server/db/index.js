@@ -8,7 +8,17 @@ const Orders = require('./models/Orders');
 const Order_items = require('./models/Order_items');
 
 //------------------------------------------------>
+User.hasMany(Orders);
+Orders.belongsTo(User);
 
+Orders.hasMany(Order_items);
+Order_items.belongsTo(Orders);
+
+Product.hasMany(Review);
+Review.belongsTo(Product);
+
+Product.belongsTo(Order_items);
+Order_items.hasMany(Product);
 
 module.exports = {
   db,
