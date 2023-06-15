@@ -1,29 +1,89 @@
 'use strict'
 
-const {db, models: {User} } = require('../server/db')
+const {db, models: {User, Product, Orders, Review, Order_items} } = require('../server/db')
 
-/**
- * seed - this function clears the database, updates tables to
- *      match the models, and populates the database.
- */
+// ----Products----
+const products = [{
+  name: 'Patience (For Traffic)',
+  description: 'For those who regularly have the most atrocious commutes to work or otherwise this is for you!!',
+  price: 25,
+  category: 'Patience'
+}, {
+  name:'Discipline (Walking the dog)',
+  description: `Tired of finding..."gold" or "bronze" in your home, buy this discipline and you're guarenteed to have a 25% decrease in discovering "treasure" for 6 months!!`,
+  price: 30,
+  category: 'Discipline'
+}, {
+  name: 'Patience (Long lines)',
+  description: 'Have a palpapable dislike for waiting in lines or perhaps, for whatever reason, find yourself hating whoever is in front of said line? Buy this patience to increase your tolerance by 15%',
+  price: 15,
+  category: 'Patience'
+}];
+
+// ---Reviews-----
+const reviews = [{
+  comment: `Before purchasing 'walking the dog' my home was filled with "brown suprises" and "yellow accents" (not very aromatic). Now the smell is mostly gone and there are usually yellow accents!!!`,
+  productId: 2
+}, {
+  comment: "I used to keep a baseball bat in my backseat while driving, but after purchasing 'traffic', Im significantly less angry and im starting to obey traffic laws!!",
+  productId: 1
+}, {
+  comment: "Before buying 'Long Lines,' I was known in the neighborhood as the person who yells at the people ahead. Now, with patience for long lines, I wait for them to finish their irrelevant conversation with the cashier before I begin.",
+  productId: 3
+}]
+
+// ----Users------
+const users = [{
+  username: 'cody',
+  email: 'codyCodes@yahoo.com',
+  password: '123'
+}, {
+  username: 'murphy',
+  email: 'comedicmurph@gmail.com',
+  password: '123'
+}, {
+  username: 'stacey',
+  email:'staceysMom@yahoo.com',
+  password: '123'
+}]
+
 async function seed() {
-  await db.sync({ force: true }) // clears db and matches models to tables
-  console.log('db synced!')
 
-  // Creating Users
-  const users = await Promise.all([
-    User.create({ username: 'cody', password: '123' }),
-    User.create({ username: 'murphy', password: '123' }),
-  ])
+  try {
+    await db.sync({ force: true }) 
+    console.log('db synced!')
 
-  console.log(`seeded ${users.length} users`)
-  console.log(`seeded successfully`)
-  return {
-    users: {
-      cody: users[0],
-      murphy: users[1]
-    }
+    await Promise.all(users.map(user => {
+      return User.create(user)
+    }));
+
+    await Promise.all(products.map(product => {
+      return Product.create(product);
+    }));
+
+    await Promise.all(reviews.map(review => {
+      return Review.create(review);
+    }))
+    
+  } catch (error) {
+    console.log(error)
   }
+ 
+
+  
+  // // Creating Users
+  // const users = await Promise.all([
+  //   User.create({ username: 'murphy', password: '123' }),
+  // ])
+
+  // console.log(`seeded ${users.length} users`)
+  // console.log(`seeded successfully`)
+  // return {
+  //   users: {
+  //     cody: users[0],
+  //     murphy: users[1]
+  //   }
+  // }
 }
 
 /*
