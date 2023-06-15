@@ -1,5 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { removeFromCart, updateQuantity } from "./cartSlice";
 
 const CartPage = () => {
@@ -20,21 +21,24 @@ const CartPage = () => {
          {cartItems.length === 0 ? (
             <p>Your cart is empty.</p>
          ) : (
-            <ul>
-               {cartItems.map((item) => (
-                  <li key={item.id}>
-                     <h3>{item.name}</h3>
-                     <p>Quantity: </p>
-                     <input
-                        type='number'
-                        min='1'
-                        value={item.quantity}
-                        onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value))}
-                     />
-                     <button onClick={() => handleRemoveItem(item.id)}>Remove</button>
-                  </li>
-               ))}
-            </ul>
+            <>
+               <ul>
+                  {cartItems.map((item) => (
+                     <li key={item.id}>
+                        <h3>{item.name}</h3>
+                        <p>Quantity: </p>
+                        <input
+                           type='number'
+                           min='1'
+                           value={item.quantity}
+                           onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value))}
+                        />
+                        <button onClick={() => handleRemoveItem(item.id)}>Remove</button>
+                     </li>
+                  ))}
+               </ul>
+               <Link to='/checkout'>Proceed to Checkout</Link>
+            </>
          )}
       </div>
    );
