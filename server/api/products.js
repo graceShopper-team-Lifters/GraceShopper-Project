@@ -1,15 +1,31 @@
-const router = require('express').Router();
-const { models: { Product } } = require('../db');
+const router = require('express').Router()
+const { models: { Product }} = require('../db')
+module.exports = router
 
-// GET /api/products
-router.get('/', async (req, res, next) => {
-   try {
-      const products = await Product.findAll();
-      res.json(products);
-   } catch (err) {
-      next(err);
-   }
-});
+router.get('/', async(req, res, next) => {
+    try {
+        const products = await Product.findAll();
+        res.send(products);
+    } catch (error) {
+        next(error)  
+    }
+})
+
+router.get('/:category', async(req, res, next) => {
+    try {
+        const category = req.params.category
+
+        const specifiedProducts = await Product.findAll({
+            where:{category: category}
+        });
+        res.send(specifiedProducts);
+    } catch (error) {
+        next(error)
+    }
+})
+
+
+
 
 // GET /api/products/:id
 router.get('/:id', async (req, res, next) => {
@@ -24,5 +40,3 @@ router.get('/:id', async (req, res, next) => {
       next(err);
    }
 });
-
-module.exports = router;
