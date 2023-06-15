@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 import AuthForm from '../features/auth/AuthForm';
 import CartPage from '../features/cart/CartPage';
+import CheckoutPage from '../features/cart/CheckoutPage';
 import Home from '../features/home/Home';
 import ProductDetailsPage from '../features/products/ProductDetailsPage';
 import ProductsPage from '../features/products/ProductsPage';
@@ -29,6 +30,7 @@ const AppRoutes = () => {
           <Route path='/products' element={<ProductsPage />} />
           <Route path='/products/:id' element={<ProductDetailsPage />} />
           <Route path='/cart' element={<CartPage />} />
+          <Route path='/checkout' element={<CheckoutPage />} />
         </Routes>
       ) : (
         <Routes>
