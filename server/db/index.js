@@ -17,8 +17,8 @@ Order_items.belongsTo(Orders);
 Product.hasMany(Review);
 Review.belongsTo(Product);
 
-Product.belongsTo(Order_items);
-Order_items.hasMany(Product);
+Order_items.belongsTo(Product);
+Product.hasMany(Order_items);
 
 module.exports = {
   db,
