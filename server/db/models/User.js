@@ -12,13 +12,6 @@ const User = db.define('user', {
     allowNull: false
   },
 
-  email: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      isEmail: true
-    }
-  },
 
   password: {
     type: Sequelize.STRING,
@@ -53,20 +46,20 @@ User.authenticate = async function({ username, password }){
     return user.generateToken();
 };
 
-User.findByToken = async function(token) {
-  try {
-    const {id} = await jwt.verify(token, process.env.JWT)
-    const user = User.findByPk(id)
-    if (!user) {
-      throw 'nooo'
-    }
-    return user
-  } catch (ex) {
-    const error = Error('bad token')
-    error.status = 401
-    throw error
-  }
-}
+// User.findByToken = async function(token) {
+//   try {
+//     const {id} = await jwt.verify(token, process.env.JWT)
+//     const user = User.findByPk(id)
+//     if (!user) {
+//       throw 'nooo'
+//     }
+//     return user
+//   } catch (ex) {
+//     const error = Error('bad token')
+//     error.status = 401
+//     throw error
+//   }
+// }
 
 
 const hashPassword = async(user) => {

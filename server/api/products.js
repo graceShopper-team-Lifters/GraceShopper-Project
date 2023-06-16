@@ -22,9 +22,7 @@ router.get('/:category', async(req, res, next) => {
     } catch (error) {
         next(error)
     }
-})
-
-
+});
 
 
 // GET /api/products/:id

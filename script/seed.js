@@ -35,15 +35,12 @@ const reviews = [{
 // ----Users------
 const users = [{
   username: 'cody',
-  email: 'codyCodes@yahoo.com',
   password: '123'
 }, {
   username: 'murphy',
-  email: 'comedicmurph@gmail.com',
   password: '123'
 }, {
   username: 'stacey',
-  email:'staceysMom@yahoo.com',
   password: '123'
 }]
 
