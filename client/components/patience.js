@@ -9,11 +9,6 @@ export default function Patience() {
     return (
       <>
         <h1>Patience</h1>
-        <div>Teens</div>
-        <div>Traffic</div>
-        <div>Work</div>
-        <div>People</div>
-        <button>Add to Cart</button>
       </>
     );
 }
