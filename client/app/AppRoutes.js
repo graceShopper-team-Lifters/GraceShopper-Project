@@ -5,6 +5,8 @@ import AuthForm from '../features/auth/AuthForm';
 import CartPage from '../features/cart/CartPage';
 import CheckoutPage from '../features/cart/CheckoutPage';
 import Home from '../features/home/Home';
+import ProductDetailsPage from '../features/products/ProductDetailsPage';
+import ProductsPage from '../features/products/ProductsPage';
 import { me } from './store';
 
 /**
@@ -32,7 +34,7 @@ const AppRoutes = () => {
         </Routes>
       ) : (
         <Routes>
-          <Route
+          {/* <Route
             path="/attitude"
             element={<Attitude />}
           />
@@ -47,7 +49,7 @@ const AppRoutes = () => {
             <Route
             path="/patience"
             element={<Patience />}
-          />
+          /> */}
           <Route
             path="/*"
             element={<AuthForm name="login" displayName="Login" />}
