@@ -4,6 +4,10 @@ import { Route, Routes } from 'react-router-dom';
 import AuthForm from '../features/auth/AuthForm';
 import CartPage from '../features/cart/CartPage';
 import CheckoutPage from '../features/cart/CheckoutPage';
+import Attitude from '../components/attitude';
+import Discipline from '../components/discipline';
+import Charisma from '../components/charisma';
+import Patience from '../components/patience';
 import Home from '../features/home/Home';
 import { me } from './store';
 
