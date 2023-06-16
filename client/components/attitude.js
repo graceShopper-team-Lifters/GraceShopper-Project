@@ -85,12 +85,6 @@ export default function Attitude() {
             <Typography paragraph>
               Review 2
             </Typography>
-            <Typography paragraph>
-              Review 3
-            </Typography>
-            <Typography>
-              Review 4
-            </Typography>
           </CardContent>
         </Collapse>
       </BlackCard>
