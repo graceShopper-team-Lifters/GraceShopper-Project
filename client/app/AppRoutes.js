@@ -2,11 +2,9 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 import AuthForm from '../features/auth/AuthForm';
+import CartPage from '../features/cart/CartPage';
+import CheckoutPage from '../features/cart/CheckoutPage';
 import Home from '../features/home/Home';
-import Attitude from '../components/attitude';
-import Charisma from '../components/charisma';
-import Discipline from '../components/discipline';
-import Patience from '../components/patience';
 import { me } from './store';
 
 /**
@@ -27,6 +25,10 @@ const AppRoutes = () => {
         <Routes>
           <Route path="/*" element={<Home />} />
           <Route to="/home" element={<Home />} />
+          <Route path='/products' element={<ProductsPage />} />
+          <Route path='/products/:id' element={<ProductDetailsPage />} />
+          <Route path='/cart' element={<CartPage />} />
+          <Route path='/checkout' element={<CheckoutPage />} />
         </Routes>
       ) : (
         <Routes>
