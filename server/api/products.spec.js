@@ -28,4 +28,15 @@ describe('Product routes', () => {
             expect(res.body).to.be.an('array')
         })
     })
+
+    describe('/api/products/:id', async() => {
+        it('should return product based on id', async() => {
+            const id = 1;
+
+            const res = await request(app)
+             .get(`/api/products/${id}`)
+             .expect(200)
+            expect(res.body).to.be.an('array')
+        })
+    })
 })
