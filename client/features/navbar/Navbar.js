@@ -14,8 +14,15 @@ const Navbar = () => {
 
   return (
     <div>
-      <h1>FS-App-Template</h1>
+      <h1>Welcome to TraitRate!</h1>
       <nav>
+        <Link to="/home">Home</Link>
+        <Link to="/patience">Patience</Link>
+        <Link to="/charisma">Charisma</Link>
+        <Link to="/attitude">Attitude</Link>
+        <Link to="/discipline">Discipline</Link>
+    
+
         {isLoggedIn ? (
           <div>
             {/* The navbar will show these links after you log in */}
