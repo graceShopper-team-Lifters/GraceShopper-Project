@@ -37,6 +37,11 @@ export const ItemCard = ({ title, productId, subheader, image, description }) =>
   const [reviews, setReviews] = React.useState([]);
 
   const handleExpandClick = () => {
+    if (!isLoggedIn) {
+      alert('You need to be logged in to write a review.');
+      return;
+    }
+
     setExpanded(!expanded);
   };
 
