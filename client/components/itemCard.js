@@ -59,7 +59,7 @@ export const ItemCard = ({ title, productId, subheader, image, description }) =>
 
           <Typography variant="body2" color="text.secondary" onClick={() => {
             if (!isLoggedIn) {
-              alert('You shall not pass!');
+              alert('Must be Logged In to Purchase');
               return;
             }
             dispatch(addToCart({
@@ -77,7 +77,20 @@ export const ItemCard = ({ title, productId, subheader, image, description }) =>
 
         <IconButton aria-label="write a review">
           <CreateIcon />
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" color="text.secondary" onClick={() => {
+            if (!isLoggedIn) {
+              alert('Must be Logged In to Write a Review');
+              return;
+            }
+            dispatch(addToCart({
+              name: title,
+              subheader,
+              image,
+              description,
+              id: productId,
+            }));
+            navigate('/cart');
+          }}>
             Write a Review
           </Typography>
         </IconButton>
