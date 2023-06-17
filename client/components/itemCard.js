@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../app/store';
-import { useIsLoggedIn } from '../hooks';
+import { userIsLoggedIn } from '../hooks';
 
 const BlackCard = styled(Card)({
   border: '1px solid black',
@@ -29,7 +29,7 @@ const ExpandMore = styled((props) => {
 }));
 
 export const ItemCard = ({ title, productId, subheader, image, description }) => {
-  const isLoggedIn = useIsLoggedIn();
+  const isLoggedIn = userIsLoggedIn();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [expanded, setExpanded] = React.useState(false);
