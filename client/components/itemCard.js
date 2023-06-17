@@ -26,10 +26,6 @@ const ExpandMore = styled((props) => {
 })(({ theme, expand }) => ({
   transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
   marginLeft: 'auto',
-  // TODO: fix
-  // transition: theme.transitions.create('transform', {
-  //   duration: theme.transitions.duration.shortest,
-  // }),
 }));
 
 export const ItemCard = ({ title, productId, subheader, image, description }) => {
@@ -37,9 +33,26 @@ export const ItemCard = ({ title, productId, subheader, image, description }) =>
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [expanded, setExpanded] = React.useState(false);
+  const [reviewText, setReviewText] = React.useState('');
+  const [reviews, setReviews] = React.useState([]);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
+  };
+
+  const handleReviewSubmit = () => {
+    if (reviewText.trim() === '') {
+      alert('Please enter a review before submitting.');
+      return;
+    }
+
+    const newReview = {
+      text: reviewText,
+      id: Date.now(), // Generate a unique ID for the review
+    };
+
+    setReviews([...reviews, newReview]);
+    setReviewText('');
   };
 
   return (
@@ -54,43 +67,34 @@ export const ItemCard = ({ title, productId, subheader, image, description }) =>
       </CardContent>
 
       <CardActions disableSpacing>
-        <IconButton aria-label="add to cart">
-          <AddShoppingCartIcon />
-
-          <Typography variant="body2" color="text.secondary" onClick={() => {
+        <IconButton
+          aria-label="add to cart"
+          onClick={() => {
             if (!isLoggedIn) {
               alert('Must be Logged In to Purchase');
               return;
             }
-            dispatch(addToCart({
-              name: title,
-              subheader,
-              image,
-              description,
-              id: productId,
-            }));
+            dispatch(
+              addToCart({
+                name: title,
+                subheader,
+                image,
+                description,
+                id: productId,
+              })
+            );
             navigate('/cart');
-          }}>
+          }}
+        >
+          <AddShoppingCartIcon />
+          <Typography variant="body2" color="text.secondary">
             Add to Cart
           </Typography>
         </IconButton>
 
-        <IconButton aria-label="write a review">
+        <IconButton aria-label="write a review" onClick={handleExpandClick}>
           <CreateIcon />
-          <Typography variant="body2" color="text.secondary" onClick={() => {
-            if (!isLoggedIn) {
-              alert('Must be Logged In to Write a Review');
-              return;
-            }
-            dispatch(addToCart({
-              name: title,
-              subheader,
-              image,
-              description,
-              id: productId,
-            }));
-            navigate('/cart');
-          }}>
+          <Typography variant="body2" color="text.secondary">
             Write a Review
           </Typography>
         </IconButton>
@@ -108,8 +112,22 @@ export const ItemCard = ({ title, productId, subheader, image, description }) =>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           <Typography paragraph>Customer Reviews</Typography>
-          <Typography paragraph>Review 1</Typography>
-          <Typography paragraph>Review 2</Typography>
+          {reviews.map((review) => (
+            <Typography key={review.id} paragraph>
+              {review.text}
+            </Typography>
+          ))}
+
+          {/* New review input */}
+          <input
+            type="text"
+            placeholder="Write your review"
+            value={reviewText}
+            onChange={(e) => setReviewText(e.target.value)}
+          />
+
+          {/* Submit review button */}
+          <button onClick={handleReviewSubmit}>Submit Review</button>
         </CardContent>
       </Collapse>
     </BlackCard>
