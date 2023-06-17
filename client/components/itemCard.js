@@ -56,80 +56,82 @@ export const ItemCard = ({ title, productId, subheader, image, description }) =>
   };
 
   return (
-    <BlackCard sx={{ maxWidth: 345 }}>
-      <CardHeader title={title} subheader={subheader} />
-      <CardMedia component="img" height="194" image={image} alt={title} />
+    <div style={{ margin: '10px' }}> {/* Container with spacing around items */}
+      <BlackCard sx={{ maxWidth: 345 }}>
+        <CardHeader title={title} subheader={subheader} />
+        <CardMedia component="img" height="194" image={image} alt={title} />
 
-      <CardContent>
-        <Typography variant="body2" color="text.secondary">
-          {description}
-        </Typography>
-      </CardContent>
-
-      <CardActions disableSpacing>
-        <IconButton
-          aria-label="add to cart"
-          onClick={() => {
-            if (!isLoggedIn) {
-              alert('Must be Logged In to Purchase');
-              return;
-            }
-            dispatch(
-              addToCart({
-                name: title,
-                subheader,
-                image,
-                description,
-                id: productId,
-              })
-            );
-            navigate('/cart');
-          }}
-        >
-          <AddShoppingCartIcon />
-          <Typography variant="body2" color="text.secondary">
-            Add to Cart
-          </Typography>
-        </IconButton>
-
-        <IconButton aria-label="write a review" onClick={handleExpandClick}>
-          <CreateIcon />
-          <Typography variant="body2" color="text.secondary">
-            Write a Review
-          </Typography>
-        </IconButton>
-
-        <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </ExpandMore>
-      </CardActions>
-
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph>Customer Reviews</Typography>
-          {reviews.map((review) => (
-            <Typography key={review.id} paragraph>
-              {review.text}
-            </Typography>
-          ))}
-
-          {/* New review input */}
-          <input
-            type="text"
-            placeholder="Write your review"
-            value={reviewText}
-            onChange={(e) => setReviewText(e.target.value)}
-          />
-
-          {/* Submit review button */}
-          <button onClick={handleReviewSubmit}>Submit Review</button>
+          <Typography variant="body2" color="text.secondary">
+            {description}
+          </Typography>
         </CardContent>
-      </Collapse>
-    </BlackCard>
+
+        <CardActions disableSpacing>
+          <IconButton
+            aria-label="add to cart"
+            onClick={() => {
+              if (!isLoggedIn) {
+                alert('Must be Logged In to Purchase');
+                return;
+              }
+              dispatch(
+                addToCart({
+                  name: title,
+                  subheader,
+                  image,
+                  description,
+                  id: productId,
+                })
+              );
+              navigate('/cart');
+            }}
+          >
+            <AddShoppingCartIcon />
+            <Typography variant="body2" color="text.secondary">
+              Add to Cart
+            </Typography>
+          </IconButton>
+
+          <IconButton aria-label="write a review" onClick={handleExpandClick}>
+            <CreateIcon />
+            <Typography variant="body2" color="text.secondary">
+              Write a Review
+            </Typography>
+          </IconButton>
+
+          <ExpandMore
+            expand={expanded}
+            onClick={handleExpandClick}
+            aria-expanded={expanded}
+            aria-label="show more"
+          >
+            <ExpandMoreIcon />
+          </ExpandMore>
+        </CardActions>
+
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <CardContent>
+            <Typography paragraph>Customer Reviews</Typography>
+            {reviews.map((review) => (
+              <Typography key={review.id} paragraph>
+                {review.text}
+              </Typography>
+            ))}
+
+            {/* New review input */}
+            <input
+              type="text"
+              placeholder="Write your review"
+              value={reviewText}
+              onChange={(e) => setReviewText(e.target.value)}
+            />
+
+            {/* Submit review button */}
+            <button onClick={handleReviewSubmit}>Submit Review</button>
+          </CardContent>
+        </Collapse>
+      </BlackCard>
+    </div>
   );
 };
