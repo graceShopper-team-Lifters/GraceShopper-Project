@@ -26,7 +26,6 @@ const CartPage = () => {
                   {cartItems?.map((item) => (
                      <li key={item.id}>
                         <h3>{item.name}</h3>
-                        <img src={item.image} />
                         <p>Quantity: </p>
                         <input
                            type='number'
