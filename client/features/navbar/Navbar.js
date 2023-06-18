@@ -71,11 +71,21 @@ function ResponsiveAppBar() {
     setOpenDropdown(!openDropdown);
   };
 
+  const handleSettingsItemClick = (setting) => {
+    if (setting === 'Logout') {
+      logoutAndRedirectHome();
+    } else if (setting === 'Your Cart') {
+      navigate('/cart');
+      handleCloseUserMenu();
+    }
+  };
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          {isLoggedIn && <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, color: 'darkgrey' }} />}
+
           <Typography
             variant="h6"
             noWrap
@@ -154,47 +164,58 @@ function ResponsiveAppBar() {
                 </Button>
               </>
             )}
-            {isLoggedIn && (
-              <Button
-                onClick={logoutAndRedirectHome}
-                variant="contained"
-                color="secondary"
-                sx={{ mx: 2 }}
-              >
-                Logout
-              </Button>
-            )}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="User" src="/static/images/avatar.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+          {isLoggedIn && (
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt="User" src="/static/images/avatar.jpg" />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: '45px' }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {settings.map((setting) => {
+                  switch (setting) {
+                    case 'Your Cart':
+                      return (
+                        <MenuItem component={Link} to="/cart" key={setting}>
+                          <Typography textAlign="center">{setting}</Typography>
+                        </MenuItem>
+                      );
+
+                    case 'Logout':
+                      return (
+                        <MenuItem key={setting} onClick={() => handleSettingsItemClick(setting)}>
+                          <Typography textAlign="center">{setting}</Typography>
+                        </MenuItem>
+                      );
+
+                    default:
+                      return (
+                        <MenuItem key={setting} onClick={() => handleSettingsItemClick(setting)}>
+                          <Typography textAlign="center">{setting}</Typography>
+                        </MenuItem>
+                      );
+                  }
+                })}
+              </Menu>
+            </Box>
+          )}
         </Toolbar>
       </Container>
       {displayLoginForm && (
@@ -243,31 +264,6 @@ function ResponsiveAppBar() {
             displayName="Sign Up"
             handleCloseForm={handleSignupButtonClick}
           />
-        </Popover>
-      )}
-      {openDropdown && (
-        <Popover
-          open={openDropdown}
-          anchorEl={document.getElementById('dropdown-button')}
-          onClose={handleDropdownClick}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'left',
-          }}
-          PaperProps={{
-            sx: { p: '10px', maxWidth: '200px' },
-          }}
-        >
-          <Box sx={{ p: '10px' }}>
-            <Typography>Input Box 1</Typography>
-            <input type="text" />
-            <Typography>Input Box 2</Typography>
-            <input type="text" />
-          </Box>
         </Popover>
       )}
     </AppBar>
