@@ -18,7 +18,11 @@ router.get('/:category', async(req, res, next) => {
         const specifiedProducts = await Product.findAll({
             where:{category: category}
         });
-        res.send(specifiedProducts);
+        if(specifiedProducts) {
+         res.json(specifiedProducts);
+        } else {
+         res.status(404).json({error: 'Products Not found'})
+        }
     } catch (error) {
         next(error)
     }
@@ -27,7 +31,6 @@ router.get('/:category', async(req, res, next) => {
 
 // GET /api/products/:id
 router.get('/:id', async (req, res, next) => {
-<<<<<<< HEAD
    try {
       const product = await Product.findByPk(req.params.id);
       if (product) {
@@ -35,20 +38,7 @@ router.get('/:id', async (req, res, next) => {
       } else {
          res.status(404).json({ error: 'Product not found' });
       }
-   } catch (err) {
+   }catch (err) {
       next(err);
-   }
-});
-=======
-    try {
-       const product = await Product.findByPk(req.params.id);
-       if (product) {
-          res.json(product);
-       } else {
-          res.status(404).json({ error: 'Product not found' });
-       }
-    } catch (err) {
-       next(err);
     }
  });
->>>>>>> f303454 (Model and product route changes)
