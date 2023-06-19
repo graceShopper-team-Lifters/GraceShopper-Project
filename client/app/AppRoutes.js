@@ -4,7 +4,11 @@ import { Route, Routes } from 'react-router-dom';
 import AuthForm from '../features/auth/AuthForm';
 import CartPage from '../features/cart/CartPage';
 import CheckoutPage from '../features/cart/CheckoutPage';
-import Home from '../features/home/Home';
+import Attitude from '../components/attitude';
+import Discipline from '../components/discipline';
+import Charisma from '../components/charisma';
+import Patience from '../components/patience';
+import Home from '../components/home'
 import ProductDetailsPage from '../features/products/ProductDetailsPage';
 import ProductsPage from '../features/products/ProductsPage';
 import { me } from './store';
@@ -23,20 +27,33 @@ const AppRoutes = () => {
 
   return (
     <div>
-      {isLoggedIn ? (
+
         <Routes>
-          <Route path="/*" element={<Home />} />
-          <Route to="/home" element={<Home />} />
           <Route path='/products' element={<ProductsPage />} />
           <Route path='/products/:id' element={<ProductDetailsPage />} />
           <Route path='/cart' element={<CartPage />} />
           <Route path='/checkout' element={<CheckoutPage />} />
         </Routes>
-      ) : (
         <Routes>
           <Route
-            path="/*"
-            element={<AuthForm name="login" displayName="Login" />}
+            path="/attitude"
+            element={<Attitude />}
+          />
+          <Route
+            path="/charisma"
+            element={<Charisma />}
+          />
+            <Route
+            path="/discipline"
+            element={<Discipline />}
+          />
+            <Route
+            path="/patience"
+            element={<Patience />}
+          />
+          <Route
+            path="/home"
+            element={<Home />}
           />
           <Route
             path="/login"
@@ -47,7 +64,6 @@ const AppRoutes = () => {
             element={<AuthForm name="signup" displayName="Sign Up" />}
           />
         </Routes>
-      )}
     </div>
   );
 };
