@@ -26,7 +26,7 @@ const links = [
   { label: 'Discipline', to: '/discipline' },
 ];
 
-const settings = ['Profile', 'Account', 'Your Cart', 'Logout'];
+const settings = ['Your Cart', 'Logout'];
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -56,7 +56,7 @@ function ResponsiveAppBar() {
   const navigate = useNavigate();
   const logoutAndRedirectHome = () => {
     dispatch(logout());
-    navigate('/login');
+    navigate('/home');
   };
 
   const handleLoginButtonClick = () => {
