@@ -25,7 +25,7 @@ const CheckoutPage = () => {
             <h2>Order Placed</h2>
             <p>Thank you for your purchase!</p>
             <p>
-               <Link to='/products'>Continue Shopping</Link>
+               <Link to='/home'>Continue Shopping</Link>
             </p>
          </div>
       );
