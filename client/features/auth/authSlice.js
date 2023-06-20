@@ -9,7 +9,7 @@ const TOKEN = 'token';
 /*
   THUNKS
 */
-export const me = createAsyncThunk('auth/me', async () => {
+export const me = createAsyncThunk('/auth/me', async () => {
   const token = window.localStorage.getItem(TOKEN);
   try {
     if (token) {

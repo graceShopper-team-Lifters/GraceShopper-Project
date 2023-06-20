@@ -53,8 +53,11 @@ async function seed() {
     await db.sync({ force: true }) 
     console.log('db synced!')
 
-    await Promise.all(users.map(user => {
-      return User.create(user)
+    const createdUsers = await Promise.all(users.map(user => User.create(user)))
+
+    await Promise.all(createdUsers.map( async (user) => {
+      const order = await Orders.create();
+      await order.setUser(user);
     }));
 
     await Promise.all(products.map(product => {
@@ -68,6 +71,8 @@ async function seed() {
   } catch (error) {
     console.log(error)
   }
+
+
  
 
   
