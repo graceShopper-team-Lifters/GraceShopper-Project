@@ -1,14 +1,17 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { removeFromCart, updateQuantity } from "./cartSlice";
+import { fetchCartAsync, removeFromCart, updateQuantity } from "./cartSlice";
 
 const CartPage = () => {
    const dispatch = useDispatch();
-   const cartItems = useSelector((state) => state.cart);
+   const userId = useSelector((state) => state.auth.me.username);
+   const cartItems = useSelector(fetchCartAsync(userId));
+   console.log(userId)
 
-   const handleRemoveItem = (productId) => {
-      dispatch(removeFromCart(productId));
+   const handleRemoveItem = (orderItemId) => {
+      dispatch(removeFromCart(orderItemId));
+      dispatch(fetchCartAsync(userId));
    };
 
    const handleQuantityChange = (productId, quantity) => {
