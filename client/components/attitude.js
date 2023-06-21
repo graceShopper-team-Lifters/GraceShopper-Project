@@ -4,8 +4,6 @@ import { ItemCard } from './itemCard';
 export default function Attitude() {
   return (
     <div className="attitude-container">
-      <h1>Attitude</h1>
-
       <div className="item-card-row">
         <ItemCard
           title="Attitude for Managers"

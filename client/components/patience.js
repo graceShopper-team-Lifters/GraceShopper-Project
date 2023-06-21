@@ -4,8 +4,6 @@ import { ItemCard } from './itemCard';
 export default function Patience() {
   return (
     <div className="patience-container">
-      <h1>Patience</h1>
-
       <div className="item-card-row">
         <ItemCard
           title="Patience for Colleagues"

@@ -4,8 +4,6 @@ import { ItemCard } from './itemCard';
 export default function Charisma() {
   return (
     <div className="charisma-container">
-      <h1>Charisma</h1>
-
       <div className="item-card-row">
         <ItemCard
           title="Charisma for Speeches"

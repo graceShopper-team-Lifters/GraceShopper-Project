@@ -4,8 +4,6 @@ import { ItemCard } from './itemCard';
 export default function Discipline() {
   return (
     <div className="discipline-container">
-      <h1>Discipline</h1>
-
       <div className="item-card-row">
         <ItemCard
           title="Discipline for Weight Loss"
