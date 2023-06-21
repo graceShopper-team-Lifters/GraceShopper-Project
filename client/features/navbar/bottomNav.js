@@ -28,7 +28,7 @@ export default function SimpleBottomNavigation() {
       <a href="https://www.instagram.com" style={{ margin: '60px' }}>
         <img src="https://assets.stickpng.com/thumbs/580b57fcd9996e24bc43c521.png" alt="Instagram" style={{ width: '30px', height: '30px' }} />
       </a>
-      <span style={{ color: 'white' }}>Copyright 2023 All rights reserved.</span>
+      <span style={{ color: 'white' }}>Copyright 2023. All rights reserved.</span>
     </BottomNavigation>
   );
 }
