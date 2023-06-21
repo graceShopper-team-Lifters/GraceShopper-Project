@@ -1,26 +1,27 @@
 import * as React from 'react';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import RestoreIcon from '@mui/icons-material/Restore';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import TwitterIcon from '@mui/icons-material/Twitter';
+import InstagramIcon from '@mui/icons-material/Instagram';
 import { blue } from '@mui/material/colors';
+
 
 export default function SimpleBottomNavigation() {
   const [value, setValue] = React.useState(0);
 
   return (
-    <BottomNavigation
-      showLabels
-      value={value}
-      onChange={(event, newValue) => {
-        setValue(newValue);
-      }}
-      sx={{ backgroundColor: blue[600] }}
-    >
-      <BottomNavigationAction label="Recents" icon={<RestoreIcon />} />
-      <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
-      <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} />
-    </BottomNavigation>
+      <BottomNavigation
+        showLabels
+        value={value}
+        onChange={(event, newValue) => {
+          setValue(newValue);
+        }}
+        sx={{ backgroundColor: blue[600] }}
+      >
+     <BottomNavigationAction label="Facebook" icon={<FacebookIcon style={{ color: '#3b5998' }} />} />
+      <BottomNavigationAction label="Twitter" icon={<TwitterIcon style={{ color: '#1da1f2' }} />} />
+      <BottomNavigationAction label="Instagram" icon={<InstagramIcon style={{ color: '#e4405f' }} />} />
+      </BottomNavigation>
   );
 }

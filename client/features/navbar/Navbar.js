@@ -56,11 +56,12 @@ function ResponsiveAppBar() {
 
   const handleLoginButtonClick = () => {
     setDisplayLoginForm(!displayLoginForm);
-    setIsModalOpen(false);
+    setIsModalOpen(true);
   };
 
   const handleSignupButtonClick = () => {
     setDisplaySignupForm(!displaySignupForm);
+    setIsModalOpen(true);
   };
 
   const handleSettingsItemClick = (setting) => {

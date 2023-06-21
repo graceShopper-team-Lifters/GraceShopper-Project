@@ -3,12 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { authenticate } from '../../app/store';
 import BasicModal from './modal';
 
-/**
-  The AuthForm component can be used for Login or Sign Up.
-  Props for Login: name="login", displayName="Login"
-  Props for Sign up: name="signup", displayName="Sign Up"
-**/
-
 // TODO: wire up the trigger logic to pass `open` and `onClose` to the parent components of <AuthForm>
 const AuthForm = ({ name, displayName, open, onClose }) => {
   const { error } = useSelector((state) => state.auth);
