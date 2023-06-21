@@ -29,31 +29,26 @@ const links = [
 const settings = ['Your Cart', 'Logout'];
 
 function ResponsiveAppBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = React.useState(false);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [displayLoginForm, setDisplayLoginForm] = React.useState(false);
   const [displaySignupForm, setDisplaySignupForm] = React.useState(false);
-  const [openDropdown, setOpenDropdown] = React.useState(false);
-
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
+    setIsOpen(true);
   };
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+    setIsOpen(false);
   };
 
   const isLoggedIn = useSelector((state) => !!state.auth.me.id);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const logoutAndRedirectHome = () => {
     dispatch(logout());
     navigate('/home');
@@ -61,17 +56,15 @@ function ResponsiveAppBar() {
 
   const handleLoginButtonClick = () => {
     setDisplayLoginForm(!displayLoginForm);
+    setIsModalOpen(false);
   };
 
   const handleSignupButtonClick = () => {
     setDisplaySignupForm(!displaySignupForm);
   };
 
-  const handleDropdownClick = () => {
-    setOpenDropdown(!openDropdown);
-  };
-
   const handleSettingsItemClick = (setting) => {
+    setIsOpen(false);
     if (setting === 'Logout') {
       logoutAndRedirectHome();
     } else if (setting === 'Your Cart') {
@@ -84,7 +77,15 @@ function ResponsiveAppBar() {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          {isLoggedIn && <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, color: 'darkgrey' }} />}
+          {isLoggedIn && (
+            <AdbIcon
+              sx={{
+                display: { xs: "none", md: "flex" },
+                mr: 1,
+                color: "darkgrey",
+              }}
+            />
+          )}
 
           <Typography
             variant="h6"
@@ -93,54 +94,49 @@ function ResponsiveAppBar() {
             to="/"
             sx={{
               mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
+              display: { xs: "none", md: "flex" },
+              fontFamily: "monospace",
               fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
             }}
           >
             LOGO
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
-              onClick={handleOpenNavMenu}
               color="inherit"
             >
               <MenuIcon />
             </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-            >
+            <Menu>
               {links.map((link) => (
-                <MenuItem key={link.to} component={Link} to={link.to} onClick={handleCloseNavMenu}>
+                <MenuItem
+                  key={link.to}
+                  component={Link}
+                  to={link.to}
+                  // onClick={handleCloseNavMenu}
+                >
                   {link.label}
                 </MenuItem>
               ))}
             </Menu>
           </Box>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {links.map((link) => (
-              <Button key={link.to} component={Link} to={link.to} sx={{ mx: 2, color: 'white' }}>
+              <Button
+                key={link.to}
+                component={Link}
+                to={link.to}
+                sx={{ mx: 2, color: "white" }}
+              >
                 {link.label}
               </Button>
             ))}
@@ -174,40 +170,46 @@ function ResponsiveAppBar() {
                 </IconButton>
               </Tooltip>
               <Menu
-                sx={{ mt: '45px' }}
+                sx={{ mt: "45px" }}
                 id="menu-appbar"
                 anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
                 keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
                 }}
-                open={Boolean(anchorElUser)}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={isOpen}
                 onClose={handleCloseUserMenu}
               >
                 {settings.map((setting) => {
                   switch (setting) {
-                    case 'Your Cart':
+                    case "Your Cart":
                       return (
                         <MenuItem component={Link} to="/cart" key={setting}>
                           <Typography textAlign="center">{setting}</Typography>
                         </MenuItem>
                       );
 
-                    case 'Logout':
+                    case "Logout":
                       return (
-                        <MenuItem key={setting} onClick={() => handleSettingsItemClick(setting)}>
+                        <MenuItem
+                          key={setting}
+                          onClick={() => handleSettingsItemClick(setting)}
+                        >
                           <Typography textAlign="center">{setting}</Typography>
                         </MenuItem>
                       );
 
                     default:
                       return (
-                        <MenuItem key={setting} onClick={() => handleSettingsItemClick(setting)}>
+                        <MenuItem
+                          key={setting}
+                          onClick={() => handleSettingsItemClick(setting)}
+                        >
                           <Typography textAlign="center">{setting}</Typography>
                         </MenuItem>
                       );
@@ -221,48 +223,52 @@ function ResponsiveAppBar() {
       {displayLoginForm && (
         <Popover
           open={displayLoginForm}
-          anchorEl={document.getElementById('login-button')}
+          anchorEl={document.getElementById("login-button")}
           onClose={handleLoginButtonClick}
           anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'center',
+            vertical: "bottom",
+            horizontal: "center",
           }}
           transformOrigin={{
-            vertical: 'top',
-            horizontal: 'center',
+            vertical: "top",
+            horizontal: "center",
           }}
           PaperProps={{
-            sx: { p: '10px', maxWidth: '300px' },
+            sx: { p: "10px", maxWidth: "300px" },
           }}
         >
           <AuthForm
             name="login"
             displayName="Login"
             handleCloseForm={handleLoginButtonClick}
+            open={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
           />
         </Popover>
       )}
       {displaySignupForm && (
         <Popover
           open={displaySignupForm}
-          anchorEl={document.getElementById('signup-button')}
+          anchorEl={document.getElementById("signup-button")}
           onClose={handleSignupButtonClick}
           anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'center',
+            vertical: "bottom",
+            horizontal: "center",
           }}
           transformOrigin={{
-            vertical: 'top',
-            horizontal: 'center',
+            vertical: "top",
+            horizontal: "center",
           }}
           PaperProps={{
-            sx: { p: '10px', maxWidth: '300px' },
+            sx: { p: "10px", maxWidth: "300px" },
           }}
         >
           <AuthForm
             name="signup"
             displayName="Sign Up"
             handleCloseForm={handleSignupButtonClick}
+            open={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
           />
         </Popover>
       )}

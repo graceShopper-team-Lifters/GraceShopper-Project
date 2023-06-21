@@ -26,15 +26,12 @@ const AppRoutes = () => {
   }, []);
 
   return (
-    <div>
-
+    <>
         <Routes>
           <Route path='/products' element={<ProductsPage />} />
           <Route path='/products/:id' element={<ProductDetailsPage />} />
           <Route path='/cart' element={<CartPage />} />
           <Route path='/checkout' element={<CheckoutPage />} />
-        </Routes>
-        <Routes>
           <Route
             path="/attitude"
             element={<Attitude />}
@@ -64,7 +61,7 @@ const AppRoutes = () => {
             element={<AuthForm name="signup" displayName="Sign Up" />}
           />
         </Routes>
-    </div>
+    </>
   );
 };
 
