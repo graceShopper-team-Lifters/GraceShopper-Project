@@ -18,6 +18,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { logout } from '../../app/store';
 import AuthForm from '../auth/AuthForm';
 import LoginForm from '../auth/LoginForm';
+import LogoImage from '../../components/logo.png';
 
 const links = [
   { label: 'Home', to: '/home' },
@@ -104,7 +105,7 @@ function ResponsiveAppBar() {
               textDecoration: "none",
             }}
           >
-            LOGO
+           <img src={LogoImage} alt="Logo" />
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
