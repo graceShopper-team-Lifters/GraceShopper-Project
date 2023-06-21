@@ -38,7 +38,7 @@ export const ItemCard = ({ title, productId, subheader, image, description }) =>
 
   const handleExpandClick = () => {
     if (!isLoggedIn) {
-      alert('You need to be logged in to write a review.');
+      alert('Must Be Logged In to Write a Review.');
       return;
     }
 
@@ -47,7 +47,7 @@ export const ItemCard = ({ title, productId, subheader, image, description }) =>
 
   const handleReviewSubmit = () => {
     if (reviewText.trim() === '') {
-      alert('Please enter a review before submitting.');
+      alert('Please Enter a Review Before Submitting.');
       return;
     }
 
@@ -77,7 +77,7 @@ export const ItemCard = ({ title, productId, subheader, image, description }) =>
             aria-label="add to cart"
             onClick={() => {
               if (!isLoggedIn) {
-                alert('Must be Logged In to Purchase');
+                alert('Must be Logged In to Purchase.');
                 return;
               }
               dispatch(

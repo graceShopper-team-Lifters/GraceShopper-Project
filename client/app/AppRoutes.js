@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 import AuthForm from '../features/auth/AuthForm';
+import LoginForm from '../features/auth/LoginForm';
 import CartPage from '../features/cart/CartPage';
 import CheckoutPage from '../features/cart/CheckoutPage';
 import Attitude from '../components/attitude';
@@ -55,7 +56,7 @@ const AppRoutes = () => {
           />
           <Route
             path="/login"
-            element={<AuthForm name="login" displayName="Login" />}
+            element={<LoginForm name="login" displayName="Login" />}
           />
           <Route
             path="/signup"

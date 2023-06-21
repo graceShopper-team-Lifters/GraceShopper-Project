@@ -17,6 +17,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { logout } from '../../app/store';
 import AuthForm from '../auth/AuthForm';
+import LoginForm from '../auth/LoginForm';
 
 const links = [
   { label: 'Home', to: '/home' },
@@ -238,7 +239,7 @@ function ResponsiveAppBar() {
             sx: { p: "10px", maxWidth: "300px" },
           }}
         >
-          <AuthForm
+          <LoginForm
             name="login"
             displayName="Login"
             handleCloseForm={handleLoginButtonClick}
