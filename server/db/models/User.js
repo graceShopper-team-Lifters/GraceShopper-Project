@@ -36,7 +36,7 @@ User.prototype.correctPassword = function(candidatePwd) {
 }
 
 User.prototype.generateToken = function() {
-  return jwt.sign({id: this.id}, process.env.JWT)
+  return jwt.sign({id: this.id}, process.env.JWT_SECRET)
 }
 
 
@@ -50,23 +50,24 @@ User.authenticate = async function({ username, password }){
       error.status = 401;
       throw error;
     }
+    console.log(user)
     return user.generateToken();
 };
 
-// User.findByToken = async function(token) {
-//   try {
-//     const {id} = await jwt.verify(token, process.env.JWT)
-//     const user = User.findByPk(id)
-//     if (!user) {
-//       throw 'nooo'
-//     }
-//     return user
-//   } catch (ex) {
-//     const error = Error('bad token')
-//     error.status = 401
-//     throw error
-//   }
-// }
+User.findByToken = async function(token) {
+  try {
+    const {id} =  jwt.verify(token, process.env.JWT_SECRET)
+    const user = await User.findByPk(id)
+    if (!user) {
+      throw 'nooo'
+    }
+    return user
+  } catch (ex) {
+    const error = Error('bad token')
+    error.status = 401
+    throw error
+  }
+}
 
 
 const hashPassword = async(user) => {
