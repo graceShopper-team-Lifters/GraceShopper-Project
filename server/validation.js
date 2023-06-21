@@ -31,43 +31,55 @@ const verifyToken = (req, res, next) => {
 
 // Register new user
 app.post('/register', async (req, res) => {
-    const email = req.body.email;
-    const password = bcrypt.hashSync(req.body.password, 10);
+    const username = req.body.username;
+    const password = req.body.password;
+
+    // Log request body for debugging
+    console.log('Request body:', req.body);
+
+    // Validate username and password
+    if (!username || !password) {
+        return res.status(400).send('Username and password are required.');
+    }
 
     try {
-        // Check if email already exists
-        const user = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-        if (user.rows.length > 0) {
-            return res.status(400).send('Email already registered.');
+        // Check if username already exists
+        const existingUser = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
+        if (existingUser.rows.length > 0) {
+            return res.status(400).send('Username already registered.');
         }
 
+        // Hash the password
+        const hashedPassword = bcrypt.hashSync(password, 10);
+
         // Insert user into the database
-        const query = 'INSERT INTO users (email, password) VALUES ($1, $2)';
-        await pool.query(query, [email, password]);
+        const query = 'INSERT INTO users (username, password) VALUES ($1, $2)';
+        await pool.query(query, [username, hashedPassword]);
         res.status(201).json({message: "User registered successfully"});
 
     } catch (err) {
+        console.error('Error registering user:', err);  // Log the error for debugging
         res.status(500).send('Error registering user.');
     }
 });
 
 // Log in
 app.post('/login', async (req, res) => {
-    const email = req.body.email;
+    const username = req.body.username;
     const password = req.body.password;
 
     try {
         // Fetch user from database
-        const query = 'SELECT * FROM users WHERE email = $1';
-        const result = await pool.query(query, [email]);
+        const query = 'SELECT * FROM users WHERE username = $1';
+        const result = await pool.query(query, [username]);
         const user = result.rows[0];
 
         // Check password
-        if (bcrypt.compareSync(password, user.password)) {
+        if (user && bcrypt.compareSync(password, user.password)) {
             const token = jwt.sign({user}, process.env.JWT_SECRET, { expiresIn: '1h' });
             res.json({token});
         } else {
-            res.status(401).json({message: "Password incorrect"});
+            res.status(401).json({message: "Username or password incorrect"});
         }
     } catch (err) {
         res.status(500).send('Error logging in.');
