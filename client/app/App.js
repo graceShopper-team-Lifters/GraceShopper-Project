@@ -2,13 +2,15 @@ import React from 'react';
 
 import Navbar from '../features/navbar/Navbar';
 import AppRoutes from './AppRoutes';
+import BottomNav from '../features/navbar/bottomNav'
 
 const App = () => {
   return (
-    <div>
+    <>
       <Navbar />
       <AppRoutes />
-    </div>
+      <BottomNav />
+    </>
   );
 };
 

@@ -1,10 +1,11 @@
+import { Login } from '@mui/icons-material';
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { authenticate } from '../../app/store';
 import BasicModal from './modal';
 
 // TODO: wire up the trigger logic to pass `open` and `onClose` to the parent components of <AuthForm>
-const AuthForm = ({ name, displayName, open, onClose }) => {
+const LoginForm = ({ name, displayName, open, onClose }) => {
   const { error } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
@@ -12,9 +13,8 @@ const AuthForm = ({ name, displayName, open, onClose }) => {
     evt.preventDefault();
     const formName = evt.target.name;
     const username = evt.target.username.value;
-    const email = evt.target.email.value;
     const password = evt.target.password.value;
-    dispatch(authenticate({ username, email, password, method: formName }));
+    dispatch(authenticate({ username, password, method: formName }));
   };
 
   return (
@@ -25,12 +25,6 @@ const AuthForm = ({ name, displayName, open, onClose }) => {
             <small>Username</small>
           </label>
           <input name="username" type="text" required />
-        </div>
-        <div>
-          <label htmlFor="email">
-            <small>Email</small>
-          </label>
-          <input name="email" type="email" required />
         </div>
         <div>
           <label htmlFor="password">
@@ -47,4 +41,4 @@ const AuthForm = ({ name, displayName, open, onClose }) => {
   );
 };
 
-export default AuthForm;
+export default LoginForm;

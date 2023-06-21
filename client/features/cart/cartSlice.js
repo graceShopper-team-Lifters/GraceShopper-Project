@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+<<<<<<< HEAD
 const cartSlice = createSlice({
+=======
+export const cartSlice = createSlice({
+>>>>>>> master
    name: 'cart',
    initialState: [],
    reducers: {

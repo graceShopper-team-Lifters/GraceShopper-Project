@@ -9,7 +9,7 @@ const TOKEN = 'token';
 /*
   THUNKS
 */
-export const me = createAsyncThunk('auth/me', async () => {
+export const me = createAsyncThunk('/auth/me', async () => {
   const token = window.localStorage.getItem(TOKEN);
   try {
     if (token) {
@@ -33,9 +33,9 @@ export const me = createAsyncThunk('auth/me', async () => {
 
 export const authenticate = createAsyncThunk(
   'auth/authenticate',
-  async ({ username, password, method }, thunkAPI) => {
+  async ({ username, email, password, method }, thunkAPI) => {
     try {
-      const res = await axios.post(`/auth/${method}`, { username, password });
+      const res = await axios.post(`/auth/${method}`, { username, email, password });
       window.localStorage.setItem(TOKEN, res.data.token);
       thunkAPI.dispatch(me());
     } catch (err) {
@@ -55,18 +55,21 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState: {
     me: {},
+    email: '',
     error: null,
   },
   reducers: {
     logout(state, action) {
       window.localStorage.removeItem(TOKEN);
       state.me = {};
+      state.email = '';
       state.error = null;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(me.fulfilled, (state, action) => {
       state.me = action.payload;
+      state.email = action.payload.email;
     });
     builder.addCase(me.rejected, (state, action) => {
       state.error = action.error;

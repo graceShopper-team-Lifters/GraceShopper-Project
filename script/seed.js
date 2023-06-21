@@ -71,6 +71,12 @@ async function seed() {
   } catch (error) {
     console.log(error)
   }
+<<<<<<< HEAD
+=======
+
+
+ 
+>>>>>>> master
 
 }
 

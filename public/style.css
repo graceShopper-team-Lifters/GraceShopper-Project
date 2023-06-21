@@ -1,3 +1,36 @@
+.attitude-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.patience-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.charisma-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.discipline-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.item-card-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.item-card-row .item-card {
+  margin: 10px; /* Adjust the value as per your preference */
+}
+
+
 body {
   font-family: sans-serif;
 }

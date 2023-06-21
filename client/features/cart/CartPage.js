@@ -18,12 +18,20 @@ const CartPage = () => {
    return (
       <div>
          <h2>Cart</h2>
+<<<<<<< HEAD
          {cartItems.length === 0 ? (
+=======
+         {cartItems?.length === 0 ? (
+>>>>>>> master
             <p>Your cart is empty.</p>
          ) : (
             <>
                <ul>
+<<<<<<< HEAD
                   {cartItems.map((item) => (
+=======
+                  {cartItems?.map((item) => (
+>>>>>>> master
                      <li key={item.id}>
                         <h3>{item.name}</h3>
                         <p>Quantity: </p>
