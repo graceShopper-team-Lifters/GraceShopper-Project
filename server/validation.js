@@ -1,20 +1,50 @@
+// Configure environment variables
+const dotenv = require('dotenv');
+dotenv.config();
+
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const { Pool } = require('pg');
+const { Sequelize, DataTypes } = require('sequelize');
 
 const app = express();
 
-// Middleware to parse JSON
 app.use(express.json());
 
-// Connect to PostgreSQL
-const pool = new Pool({
-  user: process.env.DB_USER,
+// Connect to Database using Sequelize
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
   host: process.env.DB_HOST,
-  database: 'grace-shopper-project',
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
+  dialect: process.env.DB_DIALECT, // <-- set the dialect dynamically
+  port: process.env.DB_PORT, // <-- added port
+});
+
+// Define the User model
+const User = sequelize.define('User', {
+  username: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  }
+});
+
+// Define the Product model
+const Product = sequelize.define('Product', {
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  price: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: false,
+  }
 });
 
 // Middleware for verifying JWT
@@ -31,53 +61,28 @@ const verifyToken = (req, res, next) => {
   }
 };
 
-// Register new user with admin privileges
+// Register new user
 app.post('/register', async (req, res) => {
-    const { username, password, role } = req.body;
-  
-    // Validate username, password, and role
-    if (!username || !password || !role) {
-      return res.status(400).send('Username, password, and role are required.');
-    }
-  
-    try {
-      // Check if username already exists
-      const existingUser = await pool.query(
-        'SELECT * FROM users WHERE username = $1',
-        [username]
-      );
-      if (existingUser.rows.length > 0) {
-        return res.status(400).send('Username already registered.');
-      }
-  
-      // Hash the password
-      const hashedPassword = bcrypt.hashSync(password, 10);
-  
-      // Insert user into the database with role
-      const query = 'INSERT INTO users (username, password, role) VALUES ($1, $2, $3)';
-      await pool.query(query, [username, hashedPassword, role]);
-      res.status(201).json({ message: 'User registered successfully' });
-    } catch (err) {
-      console.error('Error registering user:', err);
-      res.status(500).send('Error registering user.');
-    }
-  });
+  const { username, password } = req.body;
+  const hashedPassword = bcrypt.hashSync(password, 10);
+  try {
+    await User.create({ username, password: hashedPassword });
+    res.status(201).json({ message: 'User registered successfully' });
+  } catch (err) {
+    console.error('Error registering user:', err);
+    res.status(500).send('Error registering user.');
+  }
+});
 
 // Log in
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    // Fetch user from database
-    const query = 'SELECT * FROM users WHERE username = $1';
-    const result = await pool.query(query, [username]);
-    const user = result.rows[0];
+    const user = await User.findOne({ where: { username } });
 
-    // Check password
     if (user && bcrypt.compareSync(password, user.password)) {
-      const token = jwt.sign({ user }, process.env.JWT_SECRET, {
-        expiresIn: '1h',
-      });
+      const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
       res.json({ token });
     } else {
       res.status(401).json({ message: 'Username or password incorrect' });
@@ -89,16 +94,14 @@ app.post('/login', async (req, res) => {
 
 // Add product
 app.post('/product', verifyToken, async (req, res) => {
-  jwt.verify(req.token, process.env.JWT_SECRET, async (err, authData) => {
+  jwt.verify(req.token, process.env.JWT_SECRET, async (err) => {
     if (err) {
       res.sendStatus(403);
     } else {
       const { name, price } = req.body;
 
       try {
-        // Insert product into the database
-        const query = 'INSERT INTO products (name, price) VALUES ($1, $2)';
-        await pool.query(query, [name, price]);
+        await Product.create({ name, price });
         res.json({ message: 'Product added successfully' });
       } catch (err) {
         console.error('Error adding product:', err);
@@ -110,7 +113,7 @@ app.post('/product', verifyToken, async (req, res) => {
 
 // Edit product
 app.put('/product/:id', verifyToken, async (req, res) => {
-  jwt.verify(req.token, process.env.JWT_SECRET, async (err, authData) => {
+  jwt.verify(req.token, process.env.JWT_SECRET, async (err) => {
     if (err) {
       res.sendStatus(403);
     } else {
@@ -118,10 +121,7 @@ app.put('/product/:id', verifyToken, async (req, res) => {
       const { name, price } = req.body;
 
       try {
-        // Update product in the database
-        const query =
-          'UPDATE products SET name = $1, price = $2 WHERE id = $3';
-        await pool.query(query, [name, price, productId]);
+        await Product.update({ name, price }, { where: { id: productId } });
         res.json({ message: 'Product updated successfully' });
       } catch (err) {
         console.error('Error updating product:', err);
@@ -131,43 +131,16 @@ app.put('/product/:id', verifyToken, async (req, res) => {
   });
 });
 
-// Get user information
-app.get('/user', verifyToken, async (req, res) => {
-  jwt.verify(req.token, process.env.JWT_SECRET, async (err, authData) => {
-    if (err) {
-      res.sendStatus(403);
-    } else {
-      try {
-        const userId = authData.user.id;
-        const query = 'SELECT * FROM users WHERE id = $1';
-        const result = await pool.query(query, [userId]);
-
-        // Make sure not to send the password back
-        const userInfo = result.rows[0];
-        delete userInfo.password;
-
-        res.json(userInfo);
-      } catch (err) {
-        console.error('Error retrieving user information:', err);
-        res.status(500).send('Error retrieving user information.');
-      }
-    }
-  });
-});
-
 // Dashboard routes
 
 // Get all users
 app.get('/dashboard/users', verifyToken, async (req, res) => {
-  jwt.verify(req.token, process.env.JWT_SECRET, async (err, authData) => {
+  jwt.verify(req.token, process.env.JWT_SECRET, async (err) => {
     if (err) {
       res.sendStatus(403);
     } else {
       try {
-        const query = 'SELECT * FROM users';
-        const result = await pool.query(query);
-        const users = result.rows;
-
+        const users = await User.findAll();
         res.json(users);
       } catch (err) {
         console.error('Error retrieving users:', err);
@@ -179,15 +152,12 @@ app.get('/dashboard/users', verifyToken, async (req, res) => {
 
 // Get all products
 app.get('/dashboard/products', verifyToken, async (req, res) => {
-  jwt.verify(req.token, process.env.JWT_SECRET, async (err, authData) => {
+  jwt.verify(req.token, process.env.JWT_SECRET, async (err) => {
     if (err) {
       res.sendStatus(403);
     } else {
       try {
-        const query = 'SELECT * FROM products';
-        const result = await pool.query(query);
-        const products = result.rows;
-
+        const products = await Product.findAll();
         res.json(products);
       } catch (err) {
         console.error('Error retrieving products:', err);
@@ -199,17 +169,14 @@ app.get('/dashboard/products', verifyToken, async (req, res) => {
 
 // Get user by ID
 app.get('/dashboard/users/:id', verifyToken, async (req, res) => {
-  jwt.verify(req.token, process.env.JWT_SECRET, async (err, authData) => {
+  jwt.verify(req.token, process.env.JWT_SECRET, async (err) => {
     if (err) {
       res.sendStatus(403);
     } else {
       const userId = req.params.id;
 
       try {
-        const query = 'SELECT * FROM users WHERE id = $1';
-        const result = await pool.query(query, [userId]);
-        const user = result.rows[0];
-
+        const user = await User.findByPk(userId);
         res.json(user);
       } catch (err) {
         console.error('Error retrieving user:', err);
@@ -221,18 +188,15 @@ app.get('/dashboard/users/:id', verifyToken, async (req, res) => {
 
 // Update user by ID
 app.put('/dashboard/users/:id', verifyToken, async (req, res) => {
-  jwt.verify(req.token, process.env.JWT_SECRET, async (err, authData) => {
+  jwt.verify(req.token, process.env.JWT_SECRET, async (err) => {
     if (err) {
       res.sendStatus(403);
     } else {
       const userId = req.params.id;
-      const { username, email } = req.body;
+      const { username } = req.body;
 
       try {
-        const query =
-          'UPDATE users SET username = $1, email = $2 WHERE id = $3';
-        await pool.query(query, [username, email, userId]);
-
+        await User.update({ username }, { where: { id: userId } });
         res.json({ message: 'User updated successfully' });
       } catch (err) {
         console.error('Error updating user:', err);
@@ -242,7 +206,17 @@ app.put('/dashboard/users/:id', verifyToken, async (req, res) => {
   });
 });
 
-// Start the server
-app.listen(8080, () => {
-  console.log('Server is running on port 8080');
+// Sync models with the database
+sequelize.sync({ force: false })
+  .then(() => {
+    console.log('Database & tables created!');
+  })
+  .catch((error) => {
+    console.error('Error creating tables:', error);
+  });
+
+// Start the Express server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
