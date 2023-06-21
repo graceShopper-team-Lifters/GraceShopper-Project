@@ -2,10 +2,12 @@ const path = require('path')
 const express = require('express')
 const morgan = require('morgan')
 const app = express()
+const paymentRoutes = require('./payment/paymentRoutes');
 module.exports = app
 
 // logging middleware
 app.use(morgan('dev'))
+app.use('/payment', paymentRoutes);
 
 // body parsing middleware
 app.use(express.json())

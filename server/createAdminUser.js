@@ -5,7 +5,6 @@ const registerAdminUser = async () => {
     const response = await axios.post('http://localhost:8080/register', {
       username: 'adminuser',
       password: 'adminpassword',
-      role: 'admin'
     });
 
     console.log(response.data);
