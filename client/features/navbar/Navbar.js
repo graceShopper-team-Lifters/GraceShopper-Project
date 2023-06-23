@@ -19,6 +19,8 @@ import { logout } from '../../app/store';
 import AuthForm from '../auth/AuthForm';
 import LoginForm from '../auth/LoginForm';
 import LogoImage from '../../components/logo.png';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 const links = [
   { label: 'Home', to: '/home' },
@@ -30,7 +32,7 @@ const links = [
 
 const settings = ['Your Cart', 'Logout'];
 
-function ResponsiveAppBar() {
+const ResponsiveAppBar = () => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [isOpen, setIsOpen] = React.useState(false);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -42,10 +44,12 @@ function ResponsiveAppBar() {
     setIsOpen(true);
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-    setIsOpen(false);
-  };
+   const handleCloseUserMenu = () => {
+      setAnchorElUser(null);
+      setIsOpen(false);
+      setDisplayLoginForm(false);
+      setDisplaySignupForm(false);
+   };
 
   const isLoggedIn = useSelector((state) => !!state.auth.me.id);
   const dispatch = useDispatch();
@@ -56,15 +60,15 @@ function ResponsiveAppBar() {
     navigate('/home');
   };
 
-  const handleLoginButtonClick = () => {
-    setDisplayLoginForm(!displayLoginForm);
-    setIsModalOpen(true);
-  };
+   const handleLoginButtonClick = (event) => {
+      setDisplayLoginForm(true);
+      setDisplaySignupForm(false);
+   };
 
-  const handleSignupButtonClick = () => {
-    setDisplaySignupForm(!displaySignupForm);
-    setIsModalOpen(true);
-  };
+   const handleSignupButtonClick = (event) => {
+      setDisplaySignupForm(true);
+      setDisplayLoginForm(false);
+   };
 
   const handleSettingsItemClick = (setting) => {
     setIsOpen(false);
@@ -76,8 +80,23 @@ function ResponsiveAppBar() {
     }
   };
 
-  return (
-    <AppBar position="static">
+   const handleLoginModalClose = () => {
+      setDisplayLoginForm(false);
+      setIsOpen(false);
+   };
+
+   const handleSignupModalClose = () => {
+      setDisplaySignupForm(false);
+      setIsOpen(false);
+   };
+
+   const handleLoginSuccess = () => {
+      setDisplayLoginForm(false);
+      setDisplaySignupForm(false);
+   };
+
+   return (
+    <AppBar position="static">   
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {isLoggedIn && (
@@ -118,19 +137,18 @@ function ResponsiveAppBar() {
             >
               <MenuIcon />
             </IconButton>
-            <Menu>
+            <Menu open={false}>
               {links.map((link) => (
-                <MenuItem
-                  key={link.to}
-                  component={Link}
-                  to={link.to}
-                  // onClick={handleCloseNavMenu}
-                >
-                  {link.label}
-                </MenuItem>
-              ))}
+                  <MenuItem
+                     key={link.to}
+                     component={Link}
+                     to={link.to}
+                  >
+                     {link.label}
+                  </MenuItem>
+               ))}
             </Menu>
-          </Box>
+         </Box>
 
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {links.map((link) => (
@@ -143,27 +161,29 @@ function ResponsiveAppBar() {
                 {link.label}
               </Button>
             ))}
-            {!isLoggedIn && (
-              <>
-                <Button
-                  onClick={handleLoginButtonClick}
-                  variant="contained"
-                  color="secondary"
-                  sx={{ mx: 2 }}
-                >
-                  Login
-                </Button>
-                <Button
-                  onClick={handleSignupButtonClick}
-                  variant="contained"
-                  color="secondary"
-                  sx={{ mx: 2 }}
-                >
-                  Sign Up
-                </Button>
-              </>
-            )}
           </Box>
+            {!isLoggedIn && (
+               <Box>
+                  <Button
+                     onClick={handleLoginButtonClick}
+                     variant="contained"
+                     color="secondary"
+                     startIcon={<AccountCircleIcon />}
+                     sx={{ mx: 2 }}
+                  >
+                     Login
+                  </Button>
+                  <Button
+                     onClick={handleSignupButtonClick}
+                     variant="contained"
+                     color="secondary"
+                     startIcon={<PersonAddIcon />}
+                     sx={{ mx: 2 }}
+                  >
+                     Sign Up
+                  </Button>
+               </Box>
+            )}
 
           {isLoggedIn && (
             <Box sx={{ flexGrow: 0 }}>
@@ -223,60 +243,60 @@ function ResponsiveAppBar() {
           )}
         </Toolbar>
       </Container>
-      {displayLoginForm && (
-        <Popover
-          open={displayLoginForm}
-          anchorEl={document.getElementById("login-button")}
-          onClose={handleLoginButtonClick}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "center",
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "center",
-          }}
-          PaperProps={{
-            sx: { p: "10px", maxWidth: "300px" },
-          }}
-        >
-          <LoginForm
-            name="login"
-            displayName="Login"
-            handleCloseForm={handleLoginButtonClick}
-            open={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-          />
-        </Popover>
+      {displayLoginForm && !isLoggedIn && (
+         <Popover
+            open={displayLoginForm}
+            onClose={handleLoginSuccess}
+            anchorOrigin={{
+               vertical: "bottom",
+               horizontal: "center",
+            }}
+            transformOrigin={{
+               vertical: "top",
+               horizontal: "center",
+            }}
+            PaperProps={{
+               sx: { p: "10px", maxWidth: "300px" },
+            }}
+            anchorEl={null}
+         >
+            <LoginForm
+               name="login"
+               displayName="Login"
+               handleCloseForm={handleLoginModalClose}
+               open={displayLoginForm}
+               onClose={handleLoginSuccess}
+            />
+         </Popover>
       )}
-      {displaySignupForm && (
-        <Popover
-          open={displaySignupForm}
-          anchorEl={document.getElementById("signup-button")}
-          onClose={handleSignupButtonClick}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "center",
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "center",
-          }}
-          PaperProps={{
-            sx: { p: "10px", maxWidth: "300px" },
-          }}
-        >
-          <AuthForm
-            name="signup"
-            displayName="Sign Up"
-            handleCloseForm={handleSignupButtonClick}
-            open={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-          />
-        </Popover>
+      {displaySignupForm && !isLoggedIn && (
+         <Popover
+            open={displaySignupForm}
+            onClose={() => setDisplaySignupForm(false)}
+            anchorOrigin={{
+               vertical: "bottom",
+               horizontal: "center",
+            }}
+            transformOrigin={{
+               vertical: "top",
+               horizontal: "center",
+            }}
+            PaperProps={{
+               sx: { p: "10px", maxWidth: "300px" },
+            }}
+            anchorEl={null}
+         >
+            <AuthForm
+               name="signup"
+               displayName="Sign Up"
+               handleCloseForm={handleSignupModalClose}
+               open={displaySignupForm}
+               onClose={handleLoginSuccess}
+            />
+         </Popover>
       )}
     </AppBar>
   );
-}
+};
 
 export default ResponsiveAppBar;
