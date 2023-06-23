@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
@@ -12,9 +12,9 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Collapse from '@mui/material/Collapse';
 import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
-import { useDispatch } from 'react-redux';
-import { addToCart } from '../app/store';
 import { userIsLoggedIn } from '../hooks';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const BlackCard = styled(Card)({
   border: '1px solid black',
@@ -28,73 +28,100 @@ const ExpandMore = styled((props) => {
   marginLeft: 'auto',
 }));
 
-export const ItemCard = ({ title, productId, subheader, image, description }) => {
-  const isLoggedIn = userIsLoggedIn();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [expanded, setExpanded] = React.useState(false);
-  const [reviewText, setReviewText] = React.useState('');
-  const [reviews, setReviews] = React.useState([]);
+const customToastErrorStyle = {
+   position: 'top-center',
+   autoClose: 3000,
+   hideProgressBar: false,
+   closeOnClick: true,
+   pauseOnHover: true,
+   draggable: true,
+   progress: undefined,
+   className: 'custom-toast-error',
+   toastClassName: 'custom-toast-error-message',
+   bodyClassName: 'custom-toast-error-body',
+   style: {
+      background: '#f44336',
+      color: '#fff',
+      fontWeight: 'bold',
+      borderRadius: '8px',
+      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+      padding: '12px 16px',
+      width: '280px',
+   },
+};
 
-  const handleExpandClick = () => {
-    if (!isLoggedIn) {
-      alert('Must Be Logged In to Write a Review.');
+export const ItemCard = ({ title, productId, subheader, image, description, price, handleAddToCart }) => {
+   const isLoggedIn = userIsLoggedIn();
+   const navigate = useNavigate();
+   const [expanded, setExpanded] = React.useState(false);
+   const [reviewText, setReviewText] = React.useState('');
+   const [reviews, setReviews] = React.useState([]);
+
+   const [isAddingToCart, setIsAddingToCart] = useState(false);
+
+   const handleExpandClick = () => {
+      if (!isLoggedIn) {
+         toast.error('Must Be Logged In to Write a Review.', customToastErrorStyle);
       return;
-    }
+      }
 
-    setExpanded(!expanded);
-  };
+      setExpanded(!expanded);
+   };
 
-  const handleReviewSubmit = () => {
-    if (reviewText.trim() === '') {
-      alert('Please Enter a Review Before Submitting.');
-      return;
-    }
+   const handleReviewSubmit = () => {
+      if (reviewText.trim() === '') {
+         toast.error('Please Enter a Review Before Submitting.', customToastErrorStyle);
+         return;
+      }
 
-    const newReview = {
-      text: reviewText,
-      id: Date.now(), // Generate a unique ID for the review
-    };
+      const newReview = {
+         text: reviewText,
+         id: Date.now(), // Generate a unique ID for the review
+      };
 
-    setReviews([...reviews, newReview]);
-    setReviewText('');
-  };
+      setReviews([...reviews, newReview]);
+      setReviewText('');
+   };
+
+   const handleAddToCartClick = () => {
+      if (!isLoggedIn) {
+         toast.error('Must be Logged In to Purchase.', customToastErrorStyle);
+         return;
+      }
+
+      setIsAddingToCart(true);
+      setTimeout(() => {
+         handleAddToCart(productId);
+         setIsAddingToCart(false);
+         navigate('/cart');
+      }, 1000)
+   };
 
   return (
     <div style={{ margin: '10px' }}> {/* Container with spacing around items */}
+      <ToastContainer />
       <BlackCard sx={{ maxWidth: 345 }}>
-        <CardHeader title={title} subheader={subheader} />
+        <CardHeader title={title} />
+        <CardHeader subheader={subheader} />
         <CardMedia component="img" height="194" image={image} alt={title} />
 
         <CardContent>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" color="text.secondary" style={{ fontSize: '1.2em' }}>
             {description}
           </Typography>
         </CardContent>
 
+        <CardContent>
+          <Typography variant="body1" color="text.secondary" style={{ fontSize: '1.5em' }}>
+            <strong>{price}</strong>
+          </Typography>
+        </CardContent>
+
         <CardActions disableSpacing>
-          <IconButton
-            aria-label="add to cart"
-            onClick={() => {
-              if (!isLoggedIn) {
-                alert('Must be Logged In to Purchase.');
-                return;
-              }
-              dispatch(
-                addToCart({
-                  name: title,
-                  subheader,
-                  image,
-                  description,
-                  id: productId,
-                })
-              );
-              navigate('/cart');
-            }}
-          >
+          <IconButton aria-label="add to cart" onClick={handleAddToCartClick} disabled={isAddingToCart}>
             <AddShoppingCartIcon />
             <Typography variant="body2" color="text.secondary">
-              Add to Cart
+            {isAddingToCart ? "Adding to Cart..." : "Add to Cart"}
             </Typography>
           </IconButton>
 

@@ -43,6 +43,7 @@ const AuthForm = ({ name, displayName, open, onClose }) => {
         </div>
         {error && <div> {error} </div>}
       </form>
+      <button >Close</button>
     </BasicModal>
   );
 };

@@ -7,6 +7,10 @@ const db = require('../db')
         allowNull: false
     },
 
+    subHeader: {
+         type: Sequelize.STRING
+    },
+
     price: {
         type: Sequelize.INTEGER,
         allowNull: false,
