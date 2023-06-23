@@ -8,11 +8,13 @@ const CheckoutPage = () => {
    const username = useSelector((state) => state.auth.me.username);
    const orderItems = useSelector(selectCartItems);
 
-  const [paymentDetails, setPaymentDetails] = useState({
-    amount: "",
-    currency: "",
-    source: "",*
-  });
+   const [paymentDetails, setPaymentDetails] = useState({
+      amount: "",
+      currency: "",
+      source: ""
+   });
+
+   const [orderPlaced, setOrderPlaced] = useState(false);
    const [isLoading, setIsLoading] = useState(false);
 
    useEffect(() => {

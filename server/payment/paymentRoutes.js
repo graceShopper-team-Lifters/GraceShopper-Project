@@ -3,19 +3,19 @@ const router = express.Router();
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const paypal = require('paypal-rest-sdk');
 
-// Configure Stripe
-stripe.setApiVersion('2020-08-27');
-stripe.setAppInfo({
-  name: 'Your Application Name',
-  version: '1.0.0',
-});
+// // Configure Stripe
+// stripe.setApiVersion('2020-08-27');
+// stripe.setAppInfo({
+//   name: 'Your Application Name',
+//   version: '1.0.0',
+// });
 
-// Configure PayPal
-paypal.configure({
-  mode: 'sandbox',
-  client_id: process.env.PAYPAL_CLIENT_ID,
-  client_secret: process.env.PAYPAL_CLIENT_SECRET,
-});
+// // Configure PayPal
+// paypal.configure({
+//   mode: 'sandbox',
+//   client_id: process.env.PAYPAL_CLIENT_ID,
+//   client_secret: process.env.PAYPAL_CLIENT_SECRET,
+// });
 
 // Stripe payment route
 router.post('/pay-with-stripe', async (req, res) => {
