@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Home() {
   return (
-    <div className="page-container" style={{ backgroundColor: 'grey', fontFamily: 'Arial, sans-serif' }}>
+    <div className="page-container" style={{ fontFamily: 'Arial, sans-serif', marginTop: '105px', marginBottom: '118px' }}>
       <div className="top-left">
         <h1 className="title" style={{ color: 'black' }}>Personality Supplements for all your Situational Needs</h1>
         <hr style={{ borderTop: '1px solid black', width: '50%', margin: '1rem auto' }} />
