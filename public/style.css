@@ -2,7 +2,6 @@ body{
   background-color: rgb(106, 173, 235);
 }
 
-
 .attitude-container {
   display: flex;
   flex-direction: column;
@@ -26,13 +25,16 @@ body{
 }
 
 .item-card-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(3, 400px);
+  justify-content: center; 
+  gap: 10px; 
+  width: 200px;
 }
 
 .item-card-row .item-card {
-  margin: 10px; /* Adjust the value as per your preference */
+  margin: 0px; /* Adjust the value as per your preference */
+  width: 200px;
 }
 
 
@@ -69,7 +71,7 @@ form div {
 }
 
 .title {
-  font-size: 45px;
+  font-size: 35px;
   font-weight: bold;
   color: #333;
   margin-bottom: 40px;
@@ -77,7 +79,7 @@ form div {
 }
 
 .subheader {
-  font-size: 24px;
+  font-size: 20px;
   color: #777;
   margin-bottom: 40px;
 }
@@ -99,14 +101,14 @@ form div {
 }
 
 .grid-item h3 {
-  font-size: 24px;
+  font-size: 30px;
   font-weight: bold;
   color: #333;
   margin-bottom: 10px;
 }
 
 .grid-item p {
-  font-size: 18px;
+  font-size: 15px;
   color: #666;
 }
 

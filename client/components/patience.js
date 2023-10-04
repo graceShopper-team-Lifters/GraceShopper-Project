@@ -31,7 +31,7 @@ const Patience = () => {
                      </div>
                   }
                   productId={product.id}
-                  subheader={`Product-${product.id}`}
+                  subheader={``}
                   image={product.imageURL}
                   description={product.description}
                   price={`$${product.price/100}`}

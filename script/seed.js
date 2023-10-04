@@ -34,7 +34,7 @@ const products = [{
 }, {
   name: "Discipline for Elevators",
   subHeader: "Hold the Door Open for Everyone!",
-  description: `This item is for those who push the "close" button on elevators to avoid waiting for others. Use this product to assist in developing a reputation for being patient with those slow walkers.`,
+  description: `This item is for those who push the "close" button on elevators to avoid waiting for others. Use this product to assist in developing a reputation for being patient with those slow walkers. As a bonus, you'll even do it with a smile on your face.`,
   imageURL: "https://www.etiquetteschoolofamerica.com/wp-content/uploads/2013/09/Going-Up__-The-Top-7-Savvy-Tips-for-Riding-Elevators-scaled.jpeg",
   price:1000,
   category:'Discipline',
@@ -62,7 +62,7 @@ const products = [{
 }, {
   name:"Charisma for Speeches",
   subHeader:"Make it Memorable for All!",
-  description: `This item is for those who dread making speeches. After using "Charisma for Speeches," you'll love getting up and speaking through the heart! Our introverts have experienced the best results. `,
+  description: `This item is for those who dread making speeches. After using "Charisma for Speeches," you'll love getting up and speaking through the heart, no matter much you don't mean it! Our introverts have experienced the best results. `,
   imageURL:"https://assets.entrepreneur.com/content/3x2/2000/20160303162410-businesswoman-speaker-speech-presentation-meeting-conference-talk-seminar-guest.jpeg",
   price:4300,
   category:'Charisma',
@@ -76,7 +76,7 @@ const products = [{
 }, {
   name:"Charisma for Holidays",
   subHeader:"You'll be the one Celebrated!",
-  description:`The holidays are a time of year that often brings people together to celebrate different faiths. After taking this item, you'll have enough charisma to draw all of the attention. Take this with food for best results. `,
+  description:`The holidays are a time of year that often brings people together to celebrate different faiths. After taking this item, you'll have enough charisma to draw all of the attention. Take this with food and much alcohol for best results. `,
   imageURL:"https://thedacare.org/wp-content/uploads/2021/10/friends-and-family-enjoying-holiday-dinner.jpg?w=1424&h=900&crop=1",
   price:1500,
   category:'Charisma',
@@ -111,14 +111,14 @@ const products = [{
 }, {
   name:"Attitude for News Networks ",
   subHeader:"Appear to Enjoy the News!",
-  description:`Attitude for News Networks" enables you to enjoy all of the depressing news that our world has to offer. This item applies to every news network no matter the size! This attitude item lasts for 2 months.`,
+  description:`Attitude for News Networks" enables you to enjoy all of the depressing news that our world has to offer. This item applies to every news network no matter the size! This attitude item lasts for 2 months and persists through 4 debates.`,
   imageURL:"https://cdn-prod.medicalnewstoday.com/content/images/articles/321/321230/man-looking-distressed.jpg",
   price:1000,
   category:'Attitude',
 }, {
   name:"Attitude for Teenagers",
   subHeader:"Tolerate Your Child's Antics!",
-  description:`Attitude for Teenagers" is popular among parents who have teenaged children. You may not understand why your teen son and/or daughter does what they do, but with this item, you'll now have a full understanding.`,
+  description:`Attitude for Teenagers" is popular among parents who have teenaged children. You may not understand why your teen son and/or daughter does what they do, but with this item, you'll develop a full understanding. Do not take this item with alcohol.`,
   imageURL:"https://expatchild.com/wp-content/uploads/2015/03/expat-parent-teen-relationship.jpg",
   price:2000,
   category:'Attitude',
@@ -139,13 +139,13 @@ const products = [{
 }, {
   name:"Attitude for Exes",
   subHeader:"Every Breakup is a Good One!",
-  description:`This item is highly desired during the holidays, especially Valentine's day. Some breakups are rough, but this item will enable you to only remember the bad times! "Attitude for Exes lasts 6 months.`,
+  description:`This item is highly desired during the holidays, especially Valentine's day. Some breakups are rough, but this item will enable you to only remember the bad times and worst arguments! "Attitude for Exes lasts 6 months.`,
   imageURL:"https://markmanson.net/wp-content/uploads/2016/04/couple-break-up-broken-heart.jpg",
   price:4000,
   category:'Attitude',
 }, {
   name:"Patience for Colleagues",
-  subHeader:"Enjoy Conversing with All Colleagues!",
+  subHeader:"Enjoy Conversing with Colleagues!",
   description:`This item is bought and often used on Monday mornings. Our customers have reported a large increase in patience at work and seem more interested in how their colleague's weekend actually went.`,
   imageURL:"https://nycofficesuites.com/wp-content/uploads/2018/04/Woman-frustrated-by-annoying-coworker.jpg",
   price:5000,
@@ -160,7 +160,7 @@ const products = [{
 }, {
   name:"Patience for Parents",
   subHeader:"Every Child is an Angel!",
-  description:`Attention educators! If you've ever had challenging interactions with parents of your students, we have a solution for you! Introducing "Patience for Parents" - a product designed to help you maintain a positive and understanding attitude towards every parent. With "Patience for Parents," you'll find it easier to foster productive relationships and see every child in a positive light.`,
+  description:`Attention educators! If you've ever had challenging interactions with parents of your students, we have a solution for you! With "Patience for Parents," you'll find it easier to see every parent's child for the angel they are.`,
   imageURL:"https://jeanawhitaker.com/wp-content/uploads/2022/09/stressed-teacher-scaled.jpg",
   price:2500,
   category:'Patience',

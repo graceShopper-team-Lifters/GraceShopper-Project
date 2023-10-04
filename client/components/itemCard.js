@@ -15,9 +15,15 @@ import { styled } from '@mui/material/styles';
 import { userIsLoggedIn } from '../hooks';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import '../../public/style.css';
+
+
 
 const BlackCard = styled(Card)({
   border: '1px solid black',
+  width: '550px', // or whatever width you desire
+  height: '550px', // or whatever height you desire
+  overflow: 'auto', 
 });
 
 const ExpandMore = styled((props) => {
@@ -50,7 +56,7 @@ const customToastErrorStyle = {
    },
 };
 
-export const ItemCard = ({ title, productId, subheader, image, description, price, handleAddToCart }) => {
+export const ItemCard = ({ title, productId, subHeader, subheader, image, description, price, handleAddToCart }) => {
    const isLoggedIn = userIsLoggedIn();
    const navigate = useNavigate();
    const [expanded, setExpanded] = React.useState(false);
@@ -84,6 +90,7 @@ export const ItemCard = ({ title, productId, subheader, image, description, pric
    };
 
    const handleAddToCartClick = () => {
+    console.log("handleAddToCartClick triggered");
       if (!isLoggedIn) {
          toast.error('Must be Logged In to Purchase.', customToastErrorStyle);
          return;
@@ -102,17 +109,17 @@ export const ItemCard = ({ title, productId, subheader, image, description, pric
       <ToastContainer />
       <BlackCard sx={{ maxWidth: 345 }}>
         <CardHeader title={title} />
-        <CardHeader subheader={subheader} />
+        <CardHeader subheader={subHeader} className='itemsubHeader' />
         <CardMedia component="img" height="194" image={image} alt={title} />
 
         <CardContent>
-          <Typography variant="body2" color="text.secondary" style={{ fontSize: '1.2em' }}>
+          <Typography variant="body2" color="text.secondary" style={{ fontSize: '0.8em' }}>
             {description}
           </Typography>
         </CardContent>
 
         <CardContent>
-          <Typography variant="body1" color="text.secondary" style={{ fontSize: '1.5em' }}>
+          <Typography variant="body1" color="text.secondary"  style={{ marginBottom: '-20px', fontSize: '1.2em', textAlign: 'center' }}>
             <strong>{price}</strong>
           </Typography>
         </CardContent>
